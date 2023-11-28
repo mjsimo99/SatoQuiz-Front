@@ -4,17 +4,15 @@
   <meta charset="UTF-8">
   <title>Tailwind CSS Dashboard UI - Bytewebster</title>
   <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/1.8.12/tailwind-experimental.min.css'>
-  <!-- https://bytewebster.com/ -->
-  <!-- https://bytewebster.com/ -->
-  <!-- https://bytewebster.com/ -->
+ 
 </head>
 <body class="flex bg-gray-100 min-h-screen">
   <aside class="hidden sm:flex sm:flex-col">
-    <a href="#" class="inline-flex items-center justify-center h-20 w-26 bg-purple-600 hover:bg-purple-500 focus:bg-purple-500">
-      <img mg [src]="imageUrl" alt="Company logo" class="h-12 w-12 object-cover" />
+    <a href="#" class="satocolor inline-flex items-center justify-center h-20 w-26">
+      <img [src]="imageUrl" alt="Company logo" class="h-12 w-12 object-cover" />
     </a>
     
-    <div class="flex-grow flex flex-col justify-between text-gray-500 bg-gray-800">
+    <div class="flex-grow flex flex-col justify-between text-white bg-black">
       <!-- <nav class="flex flex-col mx-4 my-6 space-y-4">
         <a href="#" class="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
           <span class="sr-only">Folders</span>
@@ -53,12 +51,10 @@
         </a>
         <a  class="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
             <span class="sr-only">question</span>
-            <!-- Replaced with "question" name -->
             Question
         </a>
         <a  class="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
             <span class="sr-only">answer</span>
-            <!-- Replaced with "answer" name -->
             Answer
         </a>
     </nav>
@@ -75,7 +71,7 @@
     </div>
   </aside>
   <div class="flex-grow text-gray-800">
-    <header class="flex items-center h-20 px-6 sm:px-10 bg-white">
+    <header class="flex items-center h-20 px-6 sm:px-10 bg-black">
       <button class="block sm:hidden relative flex-shrink-0 p-2 mr-2 text-gray-600 hover:bg-gray-100 hover:text-gray-800 focus:bg-gray-100 focus:text-gray-800 rounded-full">
         <span class="sr-only">Menu</span>
           <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -89,14 +85,14 @@
         <input type="text" role="search" placeholder="Quick Search" class="py-2 pl-10 pr-4 w-full border-4 border-transparent placeholder-gray-400 focus:bg-gray-50 rounded-lg" />
       </div>
       <div class="flex flex-shrink-0 items-center ml-auto">
-        <button class="inline-flex items-center p-2 hover:bg-gray-100 focus:bg-gray-100 rounded-lg">
+        <button class="inline-flex items-center p-2 hover:bg-gray-600 focus:bg-gray-700 rounded-lg">
           <span class="sr-only">User Menu</span>
           <div class="hidden md:flex md:flex-col md:items-end md:leading-tight">
-            <span class="font-semibold">Byte Webster</span>
-            <span class="text-sm text-gray-600">Computer Programmer</span>
+            <span class="tname font-semibold">Mohamed Amine</span>
+            <span class="text-sm text-white">Dev Jwayva</span>
           </div>
           <span class="h-12 w-12 ml-2 sm:ml-3 mr-2 bg-gray-100 rounded-full overflow-hidden">
-            <img src="https://bytewebster.com/img/logo.png" alt="user profile photo" class="h-full w-full object-cover">
+            <img [src]="majidi" alt="user profile photo" class="h-full w-full object-cover">
           </span>
           <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" class="hidden sm:block h-6 w-6 text-gray-300">
             <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
@@ -123,8 +119,8 @@
     <main class="p-6 sm:p-10 space-y-6">
       <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
         <div class="mr-6">
-          <h1 class="text-4xl font-semibold mb-2">Welcome To Dashboard</h1>
-          <h2 class="text-gray-600 ml-0.5">We Provide Free resources regarding web design and web development</h2>
+          <h1 class="text-4xl font-semibold mb-2">Welcome To SatoQuiz</h1>
+          <h2 class="text-gray-600 ml-0.5">Test and enhance your knowledge with our free quiz resources.</h2>
         </div>
      
       </div>

@@ -10,7 +10,9 @@ import { Level } from '../../models/level.model';
 })
 export class QuizDashboardComponent implements OnInit {
   levels: Level[] = [];
-  imageUrl = 'assets/images/Rules!.png';
+  imageUrl = 'assets/images/satoquiz.png';
+  majidi = 'assets/images/majidi.jpg';
+
 
 
   constructor(private levelService: LevelService) {}

@@ -7,18 +7,23 @@ import { LevelComponent } from './components/level/level.component';
 import { QuizDashboardComponent } from './components/quiz-dashboard/quiz-dashboard.component';
 import { QuizInterfaceComponent } from './components/quiz-interface/quiz-interface.component';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
+
 
 @NgModule({
   declarations: [
     AppComponent,
     LevelComponent,
     QuizDashboardComponent,
-    QuizInterfaceComponent
+    QuizInterfaceComponent,
+    
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule 
+    
   ],
   providers: [],
   bootstrap: [AppComponent]

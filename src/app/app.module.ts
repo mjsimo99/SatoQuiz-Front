@@ -3,14 +3,22 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LevelComponent } from './components/level/level.component';
+import { QuizDashboardComponent } from './components/quiz-dashboard/quiz-dashboard.component';
+import { QuizInterfaceComponent } from './components/quiz-interface/quiz-interface.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    LevelComponent,
+    QuizDashboardComponent,
+    QuizInterfaceComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

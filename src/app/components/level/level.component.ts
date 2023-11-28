@@ -1,5 +1,3 @@
-
-
 // app/components/level/level.component.ts
 import { Component, OnInit } from '@angular/core';
 import { LevelService } from '../../services/level/level.service';
@@ -12,8 +10,7 @@ import { Level } from '../../models/level.model';
 })
 export class LevelComponent implements OnInit {
   levels: Level[] = [];
-  showModal = false; 
-  newLevel: Level = { description: 'Hard', maxPoints: 0, minPoints: 0 }; 
+  newLevel: Level = { description: 'Hard', maxPoints: 0, minPoints: 0 };
 
   constructor(private levelService: LevelService) {}
 
@@ -37,7 +34,6 @@ export class LevelComponent implements OnInit {
       (data) => {
         this.newLevel = { description: '', maxPoints: 0, minPoints: 0 };
         this.fetchLevels();
-        this.showModal = false; 
       },
       (error) => {
         console.error('Error adding new level:', error);
@@ -45,8 +41,25 @@ export class LevelComponent implements OnInit {
     );
   }
 
+  updateLevel(level: Level) {
+    // Implement the logic to update the level
+    console.log('Update level:', level);
+  }
 
+  deleteLevel(level: Level) {
+    // Implement the logic to delete the level
+    console.log('Delete level:', level);
+    const levelId = level.id;
 
-
-
+    if (levelId) {
+      this.levelService.deleteLevel(levelId).subscribe(
+        () => {
+          this.fetchLevels();
+        },
+        (error) => {
+          console.error('Error deleting level:', error);
+        }
+      );
+    }
+  }
 }

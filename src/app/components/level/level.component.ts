@@ -1,7 +1,8 @@
-// app/components/level/level.component.ts
 import { Component, OnInit } from '@angular/core';
 import { LevelService } from '../../services/level/level.service';
 import { Level } from '../../models/level.model';
+import Swal from 'sweetalert2';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-level',
@@ -10,12 +11,42 @@ import { Level } from '../../models/level.model';
 })
 export class LevelComponent implements OnInit {
   levels: Level[] = [];
-  newLevel: Level = { description: 'Hard', maxPoints: 0, minPoints: 0 };
+  newLevel!: FormGroup;
+  showModal = false;
+  editMode = false;
+  editingLevel: Level | null = null;
 
-  constructor(private levelService: LevelService) {}
+  constructor(private levelService: LevelService, private formBuilder: FormBuilder) {
+    this.createForm();
+  }
 
   ngOnInit(): void {
     this.fetchLevels();
+  }
+
+  closeModal() {
+    console.log('Closing modal...');
+    this.showModal = false;
+    this.editMode = false;
+    this.editingLevel = null;
+  }
+
+  openModal() {
+    console.log('Opening modal...');
+    this.showModal = true;
+  }
+
+  editLevel(level: Level) {
+    this.editMode = true;
+    this.editingLevel = level;
+
+    this.newLevel.setValue({
+      description: level.description,
+      minPoints: level.minPoints,
+      maxPoints: level.maxPoints,
+    });
+
+    this.openModal();
   }
 
   fetchLevels() {
@@ -29,37 +60,112 @@ export class LevelComponent implements OnInit {
     );
   }
 
+  createForm() {
+    this.newLevel = this.formBuilder.group({
+      description: ['', Validators.required],
+      minPoints: ['', [Validators.required, Validators.min(0)]],
+      maxPoints: ['', [Validators.required, Validators.min(1)]],
+    });
+  }
+
+  resetForm() {
+    this.newLevel.reset();
+    this.editMode = false;
+    this.editingLevel = null;
+  }
+
   addNewLevel() {
-    this.levelService.addLevel(this.newLevel).subscribe(
-      (data) => {
-        this.newLevel = { description: '', maxPoints: 0, minPoints: 0 };
+    const levelData = this.newLevel.value;
+
+    this.levelService.addLevel(levelData).subscribe(
+      () => {
         this.fetchLevels();
+        this.resetForm();
+        this.closeModal();
+        this.showSuccessAlert('New level added');
       },
       (error) => {
         console.error('Error adding new level:', error);
+        const errorMessage = error.error?.message || 'Error adding new level';
+        this.showErrorAlert(errorMessage);
       }
     );
   }
 
-  updateLevel(level: Level) {
-    // Implement the logic to update the level
-    console.log('Update level:', level);
+  updateLevel() {
+    const levelData = this.newLevel.value;
+
+    if (this.editingLevel) {
+      this.levelService.updateLevel(this.editingLevel?.id || 0, levelData).subscribe(
+        () => {
+          this.fetchLevels();
+          this.resetForm();
+          this.closeModal();
+          this.showSuccessAlert('Level updated successfully');
+        },
+        (error) => {
+          console.error('Error updating level:', error);
+          const errorMessage = error.error?.message || 'Error updating level';
+          this.showErrorAlert(errorMessage);
+        }
+      );
+    }
   }
 
   deleteLevel(level: Level) {
-    // Implement the logic to delete the level
     console.log('Delete level:', level);
     const levelId = level.id;
 
     if (levelId) {
-      this.levelService.deleteLevel(levelId).subscribe(
-        () => {
-          this.fetchLevels();
-        },
-        (error) => {
-          console.error('Error deleting level:', error);
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You will not be able to recover this level!',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, keep it',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          this.levelService.deleteLevel(levelId).subscribe(
+            () => {
+              this.fetchLevels();
+              this.showSuccessAlert('Level deleted');
+            },
+            (error) => {
+              console.error('Error deleting level:', error);
+              this.showErrorAlert('Error deleting level');
+            }
+          );
+        } else if (result.dismiss === Swal.DismissReason.cancel) {
+          this.showAlert('Cancelled', 'Level not deleted', 'error');
         }
-      );
+      });
     }
+  }
+
+  private showSuccessAlert(message: string): void {
+    Swal.fire({
+      title: 'Success!',
+      text: message,
+      icon: 'success',
+      confirmButtonText: 'Ok',
+    });
+  }
+
+  private showErrorAlert(message: string): void {
+    Swal.fire({
+      title: 'Error!',
+      text: message,
+      icon: 'error',
+      confirmButtonText: 'Ok',
+    });
+  }
+
+  private showAlert(title: string, text: string, icon: any): void {
+    Swal.fire({
+      title,
+      text,
+      icon,
+    });
   }
 }

@@ -7,7 +7,9 @@ import { LevelComponent } from './components/level/level.component';
 import { QuizDashboardComponent } from './components/quiz-dashboard/quiz-dashboard.component';
 import { QuizInterfaceComponent } from './components/quiz-interface/quiz-interface.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule , ReactiveFormsModule  } from '@angular/forms';
+import { SubjectComponent } from './components/subject/subject.component';
+import { QuestionComponent } from './components/question/question.component';
 
 
 @NgModule({
@@ -16,13 +18,16 @@ import { FormsModule } from '@angular/forms';
     LevelComponent,
     QuizDashboardComponent,
     QuizInterfaceComponent,
+    SubjectComponent,
+    QuestionComponent,
     
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule 
+    FormsModule, 
+    ReactiveFormsModule
     
   ],
   providers: [],

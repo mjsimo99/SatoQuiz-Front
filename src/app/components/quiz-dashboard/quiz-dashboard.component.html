@@ -26,12 +26,12 @@
           <span class="sr-only">subject</span>
           Subject
         </a>
-        <a
+        <a [routerLink]="['/questions']"
           class="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
           <span class="sr-only">question</span>
           Question
         </a>
-        <a
+        <a [routerLink]="['/answers']"
           class="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
           <span class="sr-only">answer</span>
           Answer
@@ -144,7 +144,7 @@
           </div>
 
           <div>
-            <span class="block text-2xl font-bold">Questions : {{ question.length }}</span>
+            <span class="block text-2xl font-bold">Questions : {{ questions.length }}</span>
           </div>
         </div>
         <div class="flex items-center p-8 bg-white shadow rounded-lg">
@@ -154,7 +154,7 @@
           </div>
 
           <div>
-            <span class="block text-2xl font-bold">Answers : {{ answer.length }}</span>
+            <span class="block text-2xl font-bold">Answers : {{ answers.length }}</span>
           </div>
         </div>
         

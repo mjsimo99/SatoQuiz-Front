@@ -86,7 +86,6 @@ export class SubjectComponent implements OnInit {
         if (result.isConfirmed) {
           this.subjectService.deleteSubject(subjectId).subscribe(
             () => {
-              // Fetch subjects again after deleting the subject
               this.fetchSubjects();
               this.showSuccessAlert('Subject deleted');
             },

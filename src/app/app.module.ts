@@ -10,6 +10,7 @@ import { FormsModule , ReactiveFormsModule  } from '@angular/forms';
 import { SubjectComponent } from './components/subject/subject.component';
 import { QuestionComponent } from './components/question/question.component';
 import { AnswerComponent } from './components/answer/answer.component';
+import { StudentComponent } from './components/student/student.component';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { AnswerComponent } from './components/answer/answer.component';
     SubjectComponent,
     QuestionComponent,
     AnswerComponent,
+    StudentComponent,
     
   ],
   imports: [

@@ -32,6 +32,7 @@ export class QuizDashboardComponent implements OnInit {
     this.fetchLevels();
     this.fetchSubjects();
     this.fetchAnswers();
+    this.fetchQuestions();
   }
 
   fetchLevels() {

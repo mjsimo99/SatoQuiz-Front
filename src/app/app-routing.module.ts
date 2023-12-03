@@ -4,13 +4,17 @@ import { LevelComponent } from './components/level/level.component';
 import { SubjectComponent } from './components/subject/subject.component';
 import { AnswerComponent } from './components/answer/answer.component';
 import { QuestionComponent } from './components/question/question.component';
+import { StudentComponent } from './components/student/student.component';
+
 
 const routes: Routes = [
   { path: 'levels', component: LevelComponent },
   { path: '', redirectTo: 'QuizDashboardComponent', pathMatch: 'full' },
   { path: 'subjects', component: SubjectComponent }, 
   { path: 'answers', component: AnswerComponent }, 
-  { path: 'questions' , component: QuestionComponent}
+  { path: 'questions' , component: QuestionComponent},
+  { path: 'students' , component: StudentComponent}
+
  
 ];
 

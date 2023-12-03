@@ -22,7 +22,7 @@ export class QuestionService {
   }
 
   addQuestion(question: Question): Observable<Question> {
-    return this.http.post<Question>(`${this.apiUrl}/questions/add`, question);
+    return this.http.post<Question>(`${this.apiUrl}/questions/add-with-media`, question);
   }
 
   updateQuestion(id: number, question: Question): Observable<Question> {

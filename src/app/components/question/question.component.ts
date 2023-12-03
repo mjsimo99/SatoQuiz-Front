@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { QuestionService } from './../../services/question/question.service';
 import { Question } from './../../models/question/question';
+import { Media } from './../../models/media/media';
 import Swal from 'sweetalert2';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-question',
@@ -15,6 +16,8 @@ export class QuestionComponent implements OnInit {
   showModal = false;
   editMode = false;
   editingQuestion: Question | null = null;
+  newMedia!: FormGroup;
+  
 
   constructor(private questionService: QuestionService, private formBuilder: FormBuilder) {
     this.createForm();
@@ -44,12 +47,11 @@ export class QuestionComponent implements OnInit {
       answersNumber: question.answersNumber,
       answersNumberCorrect: question.answersNumberCorrect,
       text: question.text,
-      duration: question.duration,
       type: question.type,
       scorePoints: question.scorePoints,
-      subject: { id: question.subject.id },
-      level: { id: question.level.id },
-      mediaList: question.mediaList || [],
+      subject: { id: question.subject.id, intitule: question.subject.intitule },
+      level: { id: question.level.id, description: question.level.description },
+      mediaList: []
     });
 
     this.openModal();
@@ -71,16 +73,17 @@ export class QuestionComponent implements OnInit {
       answersNumber: ['', Validators.required],
       answersNumberCorrect: ['', Validators.required],
       text: ['', Validators.required],
-      duration: ['', Validators.required],
       type: ['', Validators.required],
       scorePoints: ['', Validators.required],
       subject: this.formBuilder.group({
         id: ['', Validators.required],
+        intitule: ['']
       }),
       level: this.formBuilder.group({
         id: ['', Validators.required],
+        description: ['']
       }),
-      mediaList: [[]],
+      mediaList: this.formBuilder.array([])  // Represent mediaList as a FormArray
     });
   }
 
@@ -89,9 +92,29 @@ export class QuestionComponent implements OnInit {
     this.editMode = false;
     this.editingQuestion = null;
   }
-
   addQuestion() {
-    this.questionService.addQuestion(this.newQuestion.value).subscribe(
+    // Convert mediaList FormArray to an array of objects
+    const mediaList = (this.newQuestion.get('mediaList') as FormArray).value as Media[];
+
+    // Create a new Question object with the mediaList array
+    const newQuestion: Question = {
+      answersNumber: this.newQuestion.value.answersNumber,
+      answersNumberCorrect: this.newQuestion.value.answersNumberCorrect,
+      text: this.newQuestion.value.text,
+      type: this.newQuestion.value.type,
+      scorePoints: this.newQuestion.value.scorePoints,
+      subject: {
+        id: this.newQuestion.value.subject.id,
+        intitule: this.newQuestion.value.subject.intitule
+      },
+      level: {
+        id: this.newQuestion.value.level.id,
+        description: this.newQuestion.value.level.description
+      },
+      mediaList: mediaList
+    };
+
+    this.questionService.addQuestion(newQuestion).subscribe(
       (data) => {
         this.questions.push(data);
         this.resetForm();
@@ -105,9 +128,50 @@ export class QuestionComponent implements OnInit {
     );
   }
 
+  media = {
+    link: '',
+    type: ''
+  };
+  addMedia() {
+    const mediaList = this.newQuestion.get('mediaList') as FormArray;
+    mediaList.push(this.formBuilder.group({
+      link: [''],  // or provide default values if needed
+      type: ['']
+    }));
+  }
+  
+
+  removeMedia(index: number) {
+    const mediaList = this.newQuestion.get('mediaList') as FormArray;
+    mediaList.removeAt(index);
+  }
+
   updateQuestion() {
     if (this.editingQuestion) {
-      this.questionService.updateQuestion(this.editingQuestion?.questionId || 0, this.newQuestion.value).subscribe(
+      // Convert mediaList FormArray to an array of objects
+      const mediaList = (this.newQuestion.get('mediaList') as FormArray).value as Media[];
+  
+      // Create an updated Question object with the mediaList array
+      const updatedQuestion: Question = {
+        questionId: this.editingQuestion?.questionId ?? 0,
+        answersNumber: this.newQuestion.value.answersNumber,
+        answersNumberCorrect: this.newQuestion.value.answersNumberCorrect,
+        text: this.newQuestion.value.text,
+        type: this.newQuestion.value.type,
+        scorePoints: this.newQuestion.value.scorePoints,
+        subject: {
+          id: this.newQuestion.value.subject.id,
+          intitule: this.newQuestion.value.subject.intitule
+        },
+        level: {
+          id: this.newQuestion.value.level.id,
+          description: this.newQuestion.value.level.description
+        },
+        mediaList: mediaList
+      };
+  
+      this.questionService.updateQuestion(updatedQuestion.questionId ?? 0, updatedQuestion).subscribe(
+
         () => {
           this.fetchQuestions();
           this.resetForm();
@@ -121,7 +185,6 @@ export class QuestionComponent implements OnInit {
       );
     }
   }
-
   deleteQuestion(question: Question) {
     console.log('Delete question:', question);
     const questionId = question.questionId;
@@ -176,5 +239,8 @@ export class QuestionComponent implements OnInit {
       icon,
       confirmButtonText: 'Ok',
     });
+  }
+  getMediaListControls() {
+    return (this.newQuestion.get('mediaList') as FormArray).controls;
   }
 }

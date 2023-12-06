@@ -1,0 +1,89 @@
+<!-- validation.component.html -->
+
+<button (click)="openModal()" class="flex items-center justify-center m-auto mb-5 bg-blue-500 text-white hover:text-blue-500 hover:bg-white border border-solid border-1 border-white hover:border-blue-700 p-4" type="button">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 mr-2">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+    </svg>
+    <span>Add Validation</span>
+</button>
+
+<div tabindex="-1" aria-hidden="true" *ngIf="showModal"
+    class="bg-gray-500 bg-opacity-75 flex items-center overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center  w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full text-center">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    {{ editMode ? 'Update Validation' : 'Add Validation' }}*
+                </h3>
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+
+            <div class="p-4 md:p-5">
+                <form class="p-4 md:p-5" (ngSubmit)="editMode ? updateValidation() : addValidation()" #validationForm="ngForm">
+                    <div class="grid gap-4 mb-4 grid-cols-1">
+                        <div *ngIf="!editMode" class="col-span-2">
+                                <label for="answer" class="block text-sm font-medium text-gray-700">Answer</label>
+                                <select name="answer" id="answer" [(ngModel)]="newValidation.value.answer.answerId" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    <option *ngFor="let answer of answers" [value]="answer.answerId">{{ answer.answerText }}</option>
+                                </select>
+                            </div>
+                            <div *ngIf="!editMode" class="col-span-2">
+                                <label for="question" class="block text-sm font-medium text-gray-700">Question</label>
+                                <select name="question" id="question" [(ngModel)]="newValidation.value.question.questionId" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                    <option *ngFor="let question of questions" [value]="question.questionId">{{ question.text }}</option>
+                                </select>
+                            </div>
+                            <div class="col-span-2">
+                                <label for="points" class="block text-sm font-medium text-gray-700">Points</label>
+                                <input type="number" name="points" id="points" [(ngModel)]="newValidation.value.points" autocomplete="points" class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                            </div>
+                    </div>
+                    <div class="flex justify-center">
+                        <button (click)="closeModal(); resetForm() "
+                        type="button" class="inline-flex justify-center px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" data-modal-toggle="crud-modal">
+                            Cancel
+                        </button>
+                        <button type="submit" class="inline-flex justify-center px-4 py-2 ml-3 text-sm font-medium text-white bg-indigo-600 border border-transparent rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            {{ editMode ? 'Update' : 'Add' }}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<h2 class="text-2xl font-semibold leading-tight mb-4">Validations</h2>
+
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-3">
+  <div *ngFor="let validation of validations" class="min-w-full shadow rounded-lg overflow-hidden bg-white">
+    <div class="p-4 flex flex-col">
+        <!-- <pre>{{ validation | json }}</pre> -->
+      <p class="text-gray-900 text-lg font-semibold mb-4 text-center">Validation Points: {{ validation.points }}</p>
+      <p class="text-gray-900 text-lg font-semibold mb-4 text-center">Question: {{ validation.question.text }}</p>
+      <p class="text-gray-900 text-lg font-semibold mb-4 text-center">Answer: {{ validation.answer.answerText }}</p>
+      
+      <div class="flex justify-center">
+        <button (click)="editValidation(validation)" class="mr-3 bg-orange-500 text-white hover:text-black hover:bg-white border border-solid border-1 border-white hover:border-orange-700 p-4">
+          Update
+          <div class="icon-1"></div>
+          <div class="icon-2"></div>
+          <div class="icon-3"></div>
+        </button>
+        <button (click)="deleteValidation(validation)" class="mr-3 bg-red-600 text-white hover:text-black hover:bg-white border border-solid border-1 border-white hover:border-red-700 p-4">
+          Delete
+          <div class="icon-1"></div>
+          <div class="icon-2"></div>
+          <div class="icon-3"></div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

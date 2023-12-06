@@ -11,6 +11,9 @@ import { SubjectComponent } from './components/subject/subject.component';
 import { QuestionComponent } from './components/question/question.component';
 import { AnswerComponent } from './components/answer/answer.component';
 import { StudentComponent } from './components/student/student.component';
+import { TeacherComponent } from './components/teacher/teacher.component';
+import { PartieStudentComponent } from './components/partie-student/partie-student.component';
+import { ValidationComponent } from './components/validation/validation.component';
 
 
 @NgModule({
@@ -22,6 +25,9 @@ import { StudentComponent } from './components/student/student.component';
     QuestionComponent,
     AnswerComponent,
     StudentComponent,
+    TeacherComponent,
+    PartieStudentComponent,
+    ValidationComponent,
     
   ],
   imports: [

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { QuestionService } from './../../services/question/question.service';
 import { Question } from './../../models/question/question';
 import { Media } from './../../models/media/media';
 import Swal from 'sweetalert2';
-import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-question',
@@ -16,8 +16,6 @@ export class QuestionComponent implements OnInit {
   showModal = false;
   editMode = false;
   editingQuestion: Question | null = null;
-  newMedia!: FormGroup;
-  
 
   constructor(private questionService: QuestionService, private formBuilder: FormBuilder) {
     this.createForm();
@@ -27,48 +25,51 @@ export class QuestionComponent implements OnInit {
     this.fetchQuestions();
   }
 
-  closeModal() {
-    console.log('Closing modal...');
+  closeModal(): void {
     this.showModal = false;
     this.editMode = false;
     this.editingQuestion = null;
   }
 
-  openModal() {
-    console.log('Opening modal...');
+  openModal(): void {
     this.showModal = true;
   }
 
-  editQuestion(question: Question) {
+  editQuestion(question: Question): void {
     this.editMode = true;
     this.editingQuestion = question;
 
-    this.newQuestion.setValue({
+    this.newQuestion.patchValue({
       answersNumber: question.answersNumber,
       answersNumberCorrect: question.answersNumberCorrect,
       text: question.text,
       type: question.type,
       scorePoints: question.scorePoints,
-      subject: { id: question.subject.id, intitule: question.subject.intitule },
-      level: { id: question.level.id, description: question.level.description },
-      mediaList: []
+      subject: { ...question.subject },
+      level: { ...question.level },
+    });
+
+    const mediaListFormArray = this.newQuestion.get('mediaList') as FormArray;
+    mediaListFormArray.clear();
+    question.mediaList.forEach(media => {
+      mediaListFormArray.push(this.formBuilder.group({ ...media }));
     });
 
     this.openModal();
   }
 
-  fetchQuestions() {
+  fetchQuestions(): void {
     this.questionService.getAllQuestions().subscribe(
       (data) => {
         this.questions = data;
       },
       (error) => {
-        console.error('Error fetching questions:', error);
+        this.handleFetchError(error);
       }
     );
   }
 
-  createForm() {
+  createForm(): void {
     this.newQuestion = this.formBuilder.group({
       answersNumber: ['', Validators.required],
       answersNumberCorrect: ['', Validators.required],
@@ -83,110 +84,53 @@ export class QuestionComponent implements OnInit {
         id: ['', Validators.required],
         description: ['']
       }),
-      mediaList: this.formBuilder.array([])  // Represent mediaList as a FormArray
+      mediaList: this.formBuilder.array([
+        this.formBuilder.group({
+          mediaId: [''],
+          link: [''],
+          type: ['']
+        })
+      ]),
     });
   }
 
-  resetForm() {
+  resetForm(): void {
     this.newQuestion.reset();
     this.editMode = false;
     this.editingQuestion = null;
   }
-  addQuestion() {
-    // Convert mediaList FormArray to an array of objects
-    const mediaList = (this.newQuestion.get('mediaList') as FormArray).value as Media[];
 
-    // Create a new Question object with the mediaList array
-    const newQuestion: Question = {
-      answersNumber: this.newQuestion.value.answersNumber,
-      answersNumberCorrect: this.newQuestion.value.answersNumberCorrect,
-      text: this.newQuestion.value.text,
-      type: this.newQuestion.value.type,
-      scorePoints: this.newQuestion.value.scorePoints,
-      subject: {
-        id: this.newQuestion.value.subject.id,
-        intitule: this.newQuestion.value.subject.intitule
-      },
-      level: {
-        id: this.newQuestion.value.level.id,
-        description: this.newQuestion.value.level.description
-      },
-      mediaList: mediaList
-    };
+  addQuestion(): void {
+    const mediaList = (this.newQuestion.get('mediaList') as FormArray).value as Media[];
+    const newQuestion: Question = { ...this.newQuestion.value, mediaList };
 
     this.questionService.addQuestion(newQuestion).subscribe(
       (data) => {
-        this.questions.push(data);
-        this.resetForm();
-        this.closeModal();
-        this.showSuccessAlert('Question added successfully!');
+        this.handleAddSuccess(data);
       },
       (error) => {
-        console.error('Error adding question:', error);
-        this.showErrorAlert('Error adding question!');
+        this.handleAddError(error);
       }
     );
   }
 
-  media = {
-    link: '',
-    type: ''
-  };
-  addMedia() {
-    const mediaList = this.newQuestion.get('mediaList') as FormArray;
-    mediaList.push(this.formBuilder.group({
-      link: [''],  // or provide default values if needed
-      type: ['']
-    }));
-  }
-  
-
-  removeMedia(index: number) {
-    const mediaList = this.newQuestion.get('mediaList') as FormArray;
-    mediaList.removeAt(index);
-  }
-
-  updateQuestion() {
+  updateQuestion(): void {
     if (this.editingQuestion) {
-      // Convert mediaList FormArray to an array of objects
       const mediaList = (this.newQuestion.get('mediaList') as FormArray).value as Media[];
-  
-      // Create an updated Question object with the mediaList array
-      const updatedQuestion: Question = {
-        questionId: this.editingQuestion?.questionId ?? 0,
-        answersNumber: this.newQuestion.value.answersNumber,
-        answersNumberCorrect: this.newQuestion.value.answersNumberCorrect,
-        text: this.newQuestion.value.text,
-        type: this.newQuestion.value.type,
-        scorePoints: this.newQuestion.value.scorePoints,
-        subject: {
-          id: this.newQuestion.value.subject.id,
-          intitule: this.newQuestion.value.subject.intitule
-        },
-        level: {
-          id: this.newQuestion.value.level.id,
-          description: this.newQuestion.value.level.description
-        },
-        mediaList: mediaList
-      };
-  
-      this.questionService.updateQuestion(updatedQuestion.questionId ?? 0, updatedQuestion).subscribe(
+      const updatedQuestion: Question = { ...this.editingQuestion, ...this.newQuestion.value, mediaList };
 
+      this.questionService.updateQuestion(updatedQuestion.questionId ?? 0, updatedQuestion).subscribe(
         () => {
-          this.fetchQuestions();
-          this.resetForm();
-          this.closeModal();
-          this.showSuccessAlert('Question updated successfully!');
+          this.handleUpdateSuccess();
         },
         (error) => {
-          console.error('Error updating question:', error);
-          this.showErrorAlert('Error updating question!');
+          this.handleUpdateError(error);
         }
       );
     }
   }
-  deleteQuestion(question: Question) {
-    console.log('Delete question:', question);
+
+  deleteQuestion(question: Question): void {
     const questionId = question.questionId;
 
     if (questionId) {
@@ -201,10 +145,10 @@ export class QuestionComponent implements OnInit {
         if (result.isConfirmed) {
           this.questionService.deleteQuestion(questionId).subscribe(
             () => {
-              this.fetchQuestions();
-              this.resetForm();
-              this.closeModal();
-              this.showSuccessAlert('Question deleted successfully!');
+              this.handleDeleteSuccess();
+            },
+            (error) => {
+              this.handleDeleteError(error);
             }
           );
         } else if (result.dismiss === Swal.DismissReason.cancel) {
@@ -212,6 +156,48 @@ export class QuestionComponent implements OnInit {
         }
       });
     }
+  }
+
+  // Helper Methods
+
+  private handleFetchError(error: any): void {
+    console.error('Error fetching questions:', error);
+  }
+
+  private handleAddSuccess(data: Question): void {
+    this.questions.push(data);
+    this.resetForm();
+    this.closeModal();
+    this.showSuccessAlert('Question added successfully!');
+  }
+
+  private handleAddError(error: any): void {
+    console.error('Error adding question:', error);
+    this.showErrorAlert('Error adding question!');
+  }
+
+  private handleUpdateSuccess(): void {
+    this.fetchQuestions();
+    this.resetForm();
+    this.closeModal();
+    this.showSuccessAlert('Question updated successfully!');
+  }
+
+  private handleUpdateError(error: any): void {
+    console.error('Error updating question:', error);
+    this.showErrorAlert('Error updating question!');
+  }
+
+  private handleDeleteSuccess(): void {
+    this.fetchQuestions();
+    this.resetForm();
+    this.closeModal();
+    this.showSuccessAlert('Question deleted successfully!');
+  }
+
+  private handleDeleteError(error: any): void {
+    console.error('Error deleting question:', error);
+    this.showErrorAlert('Error deleting question!');
   }
 
   private showSuccessAlert(message: string): void {
@@ -240,7 +226,25 @@ export class QuestionComponent implements OnInit {
       confirmButtonText: 'Ok',
     });
   }
-  getMediaListControls() {
+
+  getMediaListControls(): any {
     return (this.newQuestion.get('mediaList') as FormArray).controls;
+  }
+
+
+  addMediaItem(): void {
+    const mediaListFormArray = this.newQuestion.get('mediaList') as FormArray;
+    mediaListFormArray.push(
+      this.formBuilder.group({
+        mediaId: [''],
+        link: [''],
+        type: ['']
+      })
+    );
+  }
+  
+  removeMediaItem(index: number): void {
+    const mediaListFormArray = this.newQuestion.get('mediaList') as FormArray;
+    mediaListFormArray.removeAt(index);
   }
 }

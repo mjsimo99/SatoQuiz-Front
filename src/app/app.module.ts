@@ -14,6 +14,8 @@ import { StudentComponent } from './components/student/student.component';
 import { TeacherComponent } from './components/teacher/teacher.component';
 import { PartieStudentComponent } from './components/partie-student/partie-student.component';
 import { ValidationComponent } from './components/validation/validation.component';
+import { TestComponent } from './components/test/test.component';
+import { StartQuizComponent } from './start-quiz/start-quiz.component';
 
 
 @NgModule({
@@ -28,6 +30,9 @@ import { ValidationComponent } from './components/validation/validation.componen
     TeacherComponent,
     PartieStudentComponent,
     ValidationComponent,
+    TestComponent,
+    StartQuizComponent,
+    
     
   ],
   imports: [
@@ -40,5 +45,6 @@ import { ValidationComponent } from './components/validation/validation.componen
   ],
   providers: [],
   bootstrap: [AppComponent]
+
 })
 export class AppModule { }

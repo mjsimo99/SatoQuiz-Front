@@ -17,7 +17,10 @@ export class LevelComponent implements OnInit {
   editMode = false;
   editingLevel: Level | null = null;
 
-  constructor(private levelService: LevelService, private formBuilder: FormBuilder) {
+  constructor(
+    private levelService: LevelService,
+     private formBuilder: FormBuilder
+     ) {
     this.createForm();
   }
 

@@ -1,0 +1,178 @@
+<button (click)="openModal()"
+    class="flex items-center justify-center m-auto mb-5 bg-blue-500 text-white hover:text-blue-500 hover:bg-white border border-solid border-1 border-white hover:border-blue-700 p-4"
+    type="button">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 mr-2">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+    </svg>
+    <span>Add Quiz</span>
+</button>
+<h2 class="text-2xl font-semibold leading-tight mb-4">Quizes</h2>
+
+
+<!-- Table to Display Existing Tests -->
+<div class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
+    <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
+        <thead class="bg-gray-50">
+            <tr>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">Success Score</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">View Answer</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">View Result</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">Max Attempt</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">Remark</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">Instructions</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900">Teacher</th>
+                <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-center">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let test of tests" class="border-b hover:bg-gray-50">
+                <td class="px-6 py-4">{{ test.successScore }}</td>
+                <td class="px-6 py-4">{{ test.viewAnswer }}</td>
+                <td class="px-6 py-4">{{ test.viewResult }}</td>
+                <td class="px-6 py-4">{{ test.maxAttempt }}</td>
+                <td class="px-6 py-4">{{ test.remark }}</td>
+                <td class="px-6 py-4">{{ test.instructions }}</td>
+                <td class="px-6 py-4">{{ test.teacher.firstName }} {{ test.teacher.lastName }}</td>
+                <td class="px-6 py-4">
+                    <div class="flex justify-center gap-4">
+                        <button type="button" (click)="openModal(); editTest(test)"
+                            class="mr-3 bg-orange-500 text-white hover:text-black hover:bg-white border border-solid border-1 border-white hover:border-orange-700 p-4">
+                            Update
+                        </button>
+                        <button (click)="deleteTest(test)"
+                            class="mr-3 bg-red-600 text-white hover:text-black hover:bg-white border border-solid border-1 border-white hover:border-red-700 p-4">
+                            Delete
+                        </button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<!-- Test Modal -->
+<div tabindex="-1" aria-hidden="true" *ngIf="showModal"
+    class="bg-gray-500 bg-opacity-75 flex items-center overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center  w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full text-center">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                    {{ editMode ? 'Update Test' : 'Add New Test' }}
+                </h3>
+                <button type="button"
+                    class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+                    data-modal-toggle="crud-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                        viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+
+
+            <div class="p-4 md:p-5">
+                <!-- Question Form -->
+                <form (ngSubmit)="editMode ? updateTest() : addTest()" #questionForm="ngForm">
+                    <!-- Question Text -->
+                    <div class="grid gap-4 mb-4 grid-cols-1">
+                        <div class="col-span-2">
+                            <label for="successScore" class="block text-sm font-medium text-gray-700">Success
+                                Score</label>
+                            <input type="number" name="questionText" id="questionText"
+                                [(ngModel)]="newTest.value.successScore" required
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                placeholder="Success Score">
+                        </div>
+                    </div>
+
+                    <div class="grid gap-4 mb-4 grid-cols-1">
+                        <div class="col-span-2">
+                            <label for="viewAnswer" class="block text-sm font-medium text-gray-700">View Answer</label>
+                            <select name="viewAnswer" id="viewAnswer" [(ngModel)]="newTest.value.viewAnswer" required
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-4 mb-4 grid-cols-1">
+                        <div class="col-span-2">
+                            <label for="viewResult" class="block text-sm font-medium text-gray-700">View Result</label>
+                            <select name="viewResult" id="viewResult" [(ngModel)]="newTest.value.viewResult" required
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <option value="true">True</option>
+                                <option value="false">False</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="grid gap-4 mb-4 grid-cols-1">
+                        <div class="col-span-2">
+                            <label for="maxAttempt" class="block text-sm font-medium text-gray-700">Max Attempt</label>
+                            <input type="number" name="maxAttempt" id="maxAttempt" [(ngModel)]="newTest.value.maxAttempt"
+                                required
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                placeholder="Max Attempt">
+                        </div>
+                    </div>
+
+                    <div class="grid gap-4 mb-4 grid-cols-1">
+                        <div class="col-span-2">
+                            <label for="remark" class="block text-sm font-medium text-gray-700">Remark</label>
+                            <input type="text" name="remark" id="remark" [(ngModel)]="newTest.value.remark" required
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                placeholder="Remark">
+                        </div>
+                    </div>
+
+                    <div class="grid gap-4 mb-4 grid-cols-1">
+                        <div class="col-span-2">
+                            <label for="instructions"
+                                class="block text-sm font-medium text-gray-700">Instructions</label>
+                            <input type="text" name="instructions" id="instructions"
+                                [(ngModel)]="newTest.value.instructions" required
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+                                placeholder="Instructions">
+                        </div>
+                    </div>
+
+                    <div class="grid gap-4 mb-4 grid-cols-1">
+                        <div class="col-span-2">
+                            <label for="teacher" class="block text-sm font-medium text-gray-700">Teacher</label>
+                            <select name="teacher" id="teacher" [(ngModel)]="newTest.value.teacher.teacherId" required
+                                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                                <option *ngFor="let teacher of teachers" [value]="teacher.teacherId">{{
+                                    teacher.firstName }} {{
+                                    teacher.lastName }}</option>
+                            </select>
+                        </div>
+                    </div>
+
+
+
+
+
+                    <div class="flex items-center mt-6 space-x-2 rtl:space-x-reverse justify-center">
+                        <button type="submit"
+                            class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                            <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd"
+                                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                                    clip-rule="evenodd"></path>
+                            </svg>
+                            {{ editMode ? 'Update' : 'Add' }}
+                            
+                        </button>
+                        <button type="button"
+                            class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600"
+                            (click)="closeModal(); resetForm()">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

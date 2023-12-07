@@ -7,6 +7,8 @@
   <span>Add Question</span>
 </button>
 
+<h2 class="text-2xl font-semibold leading-tight mb-4">Questions</h2>
+
 <div class="overflow-hidden rounded-lg border border-gray-200 shadow-md m-5">
   <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
     <thead class="bg-gray-50">
@@ -136,15 +138,20 @@
             <div class="col-span-1">
               <label for="subjectId"
                 class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Subject</label>
-              <input type="text" name="subjectId" id="subjectId"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                [(ngModel)]="newQuestion.value.subject.id" required>
+              <select name="subject" id="subject" [(ngModel)]="newQuestion.value.subject.id"
+                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                <option *ngFor="let subject of subjects" [value]="subject.id">{{ subject.intitule }}</option>
+              </select>
+              
             </div>
             <div class="col-span-1">
               <label for="levelId" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Level</label>
-              <input type="text" name="levelId" id="levelId"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                [(ngModel)]="newQuestion.value.level.id" required>
+              <select name="level" id="level" [(ngModel)]="newQuestion.value.level.id"
+              class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+              <option *ngFor="let level of levels" [value]="level.id">{{ level.description }}</option>
+            </select>
+
+                
             </div>
           </div>
           <!-- Media Link and Type -->
@@ -152,23 +159,25 @@
             <div class="col-span-2 mt-2">
               <button type="button" class="text-red-600 font-medium" (click)="removeMediaItem(i)">Remove Media</button>
             </div>
-            <div class="col-span-1">
+            <div class="col-span-2">
               <label for="mediaLink" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media Link</label>
-              <input type="text" name="link" id="link"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+              <input type="file" name="link" id="link"
+                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 [(ngModel)]="newQuestion.value.mediaList[i].link" required>
             </div>
-            <div class="col-span-1">
+            <div class="col-span-2">
               <label for="mediaType" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media Type</label>
-              <input type="text" name="type" id="type"
-                class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                [(ngModel)]="newQuestion.value.mediaList[i].type" required>
+              <select name="mediaType" id="mediaType" [(ngModel)]="newQuestion.value.mediaList[i].type"
+                class="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md">
+                <option value="image">IMAGE</option>
+                <option value="figure">FIGURE</option>
+                <option value="son">SON</option>
+                <option value="video">VIDEO</option>
+              </select>
             </div>
-            <!-- Add a button to remove the media item -->
 
           </div>
           
-          <!-- Button to add new media items -->
           <button type="button" class="text-blue-700 font-medium" (click)="addMediaItem()">Add Media</button>
 
           

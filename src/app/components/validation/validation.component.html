@@ -65,7 +65,6 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-3">
   <div *ngFor="let validation of validations" class="min-w-full shadow rounded-lg overflow-hidden bg-white">
     <div class="p-4 flex flex-col">
-        <!-- <pre>{{ validation | json }}</pre> -->
       <p class="text-gray-900 text-lg font-semibold mb-4 text-center">Validation Points: {{ validation.points }}</p>
       <p class="text-gray-900 text-lg font-semibold mb-4 text-center">Question: {{ validation.question.text }}</p>
       <p class="text-gray-900 text-lg font-semibold mb-4 text-center">Answer: {{ validation.answer.answerText }}</p>

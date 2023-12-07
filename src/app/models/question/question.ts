@@ -1,3 +1,7 @@
+import { Level } from "../level.model";
+import { Subject } from "../subject/subject.model";
+import { Teacher } from "../teacher/teacher";
+
 export interface Question {
   questionId?: number;
   answersNumber: number;
@@ -5,14 +9,8 @@ export interface Question {
   text: string;
   type: string;
   scorePoints: number;
-  subject: {
-    id: number;
-    intitule: string;
-  };
-  level: {
-    id: number;
-    description: string;
-  };
+  subject: Subject;
+  level: Level;
   mediaList: {
     mediaId?: number;
     link: string;

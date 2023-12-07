@@ -4,6 +4,10 @@ import { QuestionService } from './../../services/question/question.service';
 import { Question } from './../../models/question/question';
 import { Media } from './../../models/media/media';
 import Swal from 'sweetalert2';
+import { Level } from 'src/app/models/level.model';
+import { LevelService } from 'src/app/services/level/level.service';
+import { Subject } from 'src/app/models/subject/subject.model';
+import { SubjectService } from 'src/app/services/subject/subject.service';
 
 @Component({
   selector: 'app-question',
@@ -16,13 +20,24 @@ export class QuestionComponent implements OnInit {
   showModal = false;
   editMode = false;
   editingQuestion: Question | null = null;
+  levels: Level[] = [];
+  subjects: Subject[] = [];
 
-  constructor(private questionService: QuestionService, private formBuilder: FormBuilder) {
+  constructor(private questionService: QuestionService,
+    private levelService: LevelService,
+    private subjectService: SubjectService,
+    private formBuilder: FormBuilder,
+    
+    
+
+    ) {
     this.createForm();
   }
 
   ngOnInit(): void {
     this.fetchQuestions();
+    this.fetchLevels();    // Add this line
+    this.fetchSubjects();  // Add this line
   }
 
   closeModal(): void {
@@ -34,6 +49,32 @@ export class QuestionComponent implements OnInit {
   openModal(): void {
     this.showModal = true;
   }
+  fetchLevels() {
+    this.levelService.getAllLevels().subscribe(
+      (data) => {
+        this.levels = data;
+        console.log(this.levels);
+      },
+      (error) => {
+        console.error('Error fetching levels:', error);
+        console.log(this.levels);
+      }
+    );
+  }
+  fetchSubjects() {
+    this.subjectService.getAllSubjects().subscribe(
+      (data) => {
+        this.subjects = data;
+        console.log(this.subjects);
+      },
+      (error) => {
+        console.error('Error fetching subjects:', error);
+        console.log(this.subjects);
+      }
+    );
+  }
+
+
 
   editQuestion(question: Question): void {
     this.editMode = true;
@@ -45,8 +86,12 @@ export class QuestionComponent implements OnInit {
       text: question.text,
       type: question.type,
       scorePoints: question.scorePoints,
-      subject: { ...question.subject },
-      level: { ...question.level },
+      subject: {
+        id: question.subject.id,
+      },
+      level: {
+        id: question.level.id,
+      }
     });
 
     const mediaListFormArray = this.newQuestion.get('mediaList') as FormArray;
@@ -78,11 +123,9 @@ export class QuestionComponent implements OnInit {
       scorePoints: ['', Validators.required],
       subject: this.formBuilder.group({
         id: ['', Validators.required],
-        intitule: ['']
       }),
       level: this.formBuilder.group({
         id: ['', Validators.required],
-        description: ['']
       }),
       mediaList: this.formBuilder.array([
         this.formBuilder.group({
@@ -231,7 +274,6 @@ export class QuestionComponent implements OnInit {
     return (this.newQuestion.get('mediaList') as FormArray).controls;
   }
 
-
   addMediaItem(): void {
     const mediaListFormArray = this.newQuestion.get('mediaList') as FormArray;
     mediaListFormArray.push(
@@ -243,6 +285,7 @@ export class QuestionComponent implements OnInit {
     );
   }
   
+
   removeMediaItem(index: number): void {
     const mediaListFormArray = this.newQuestion.get('mediaList') as FormArray;
     mediaListFormArray.removeAt(index);

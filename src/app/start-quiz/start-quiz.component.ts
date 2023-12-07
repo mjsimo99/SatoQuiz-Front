@@ -6,32 +6,48 @@ import { Component } from '@angular/core';
   styleUrls: ['./start-quiz.component.css']
 })
 export class StartQuizComponent {
-  question: string;
-  options: string[];
-  correctAnswer: number;
-  selectedOption: number | null = null;
+  question = {
+    text: 'What is the capital of France?',
+    answers: [
+      { text: 'Berlin', isCorrect: false },
+      { text: 'London', isCorrect: false },
+      { text: 'Paris', isCorrect: true },
+      { text: 'Madrid', isCorrect: false }
+    ]
+  };
 
-  constructor() {
-    // Set the question, options, and correct answer
-    this.question = "What is the capital of France?";
-    this.options = ["London", "Paris", "Berlin", "Rome"];
-    this.correctAnswer = 1; // Index of the correct answer (Paris)
+  selectedAnswer: any;
+
+  ngOnInit() {
+    // Shuffle the answers (optional)
+    this.shuffleAnswers();
   }
 
-  selectOption(optionIndex: number): void {
-    this.selectedOption = optionIndex;
+  selectAnswer(answer: any) {
+    this.selectedAnswer = answer;
   }
 
-  nextQuestion(): void {
-    if (this.selectedOption === this.correctAnswer) {
-      console.log('Correct answer!');
-      // Handle correct answer logic here
+  checkAnswer() {
+    if (this.selectedAnswer && this.selectedAnswer.isCorrect) {
+      alert('Correct Answer!');
     } else {
-      console.log('Incorrect answer!');
-      // Handle incorrect answer logic here
+      alert('Wrong Answer. Try again!');
     }
 
-    // Reset selected option for the next question
-    this.selectedOption = null;
+    // Reset selected answer
+    this.selectedAnswer = null;
+
+    // Shuffle the answers for the next question (optional)
+    this.shuffleAnswers();
+  }
+
+  // Helper function to shuffle answers (optional)
+  shuffleAnswers() {
+    this.question.answers = this.shuffleArray(this.question.answers);
+  }
+
+  // Helper function to shuffle array elements
+  shuffleArray(array: any[]) {
+    return array.sort(() => Math.random() - 0.5);
   }
 }

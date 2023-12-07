@@ -8,6 +8,7 @@ import { AnswerService } from '../../services/answer/answer.service';
 import { Answer } from '../../models/answer/answer';
 import { QuestionService } from 'src/app/services/question/question.service';
 import { Question } from 'src/app/models/question/question';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-quiz-dashboard',
@@ -25,8 +26,17 @@ export class QuizDashboardComponent implements OnInit {
   subject = 'assets/images/subject.png';
   question = 'assets/images/question.png';
   answer = 'assets/images/answer.png';
+  currentRoute: string = '';
 
-  constructor(private levelService: LevelService, private subjectService: SubjectService , private answerService: AnswerService, private questionService: QuestionService) {}
+
+
+  constructor(private levelService: LevelService,
+      private subjectService: SubjectService,
+      private answerService: AnswerService,
+      private questionService: QuestionService,
+      private router: Router
+
+  ) { }
 
   ngOnInit(): void {
     this.fetchLevels();
@@ -78,5 +88,9 @@ export class QuizDashboardComponent implements OnInit {
       }
     )
   }
+  isStartQuizRoute(): boolean {
+    return this.router.url === '/start-quiz';
+  }
+
 
 }

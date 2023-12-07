@@ -9,6 +9,7 @@ import { TeacherComponent } from './components/teacher/teacher.component';
 import { PartieStudentComponent } from './components/partie-student/partie-student.component';
 import { ValidationComponent } from './components/validation/validation.component';
 import { TestComponent } from './components/test/test.component';
+import { StartQuizComponent } from './start-quiz/start-quiz.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,7 @@ const routes: Routes = [
   { path: 'partie-student' , component: PartieStudentComponent},
   { path: 'validations' , component: ValidationComponent},
   { path: 'tests', component: TestComponent },
+  { path: 'start-quiz', component: StartQuizComponent }
 
 
 

@@ -73,7 +73,7 @@
   </aside>
   <div class="flex-grow text-gray-800">
     <header class="flex items-center h-20 px-6 sm:px-10 bg-black">
-      <button
+      <button 
         class="block sm:hidden relative flex-shrink-0 p-2 mr-2 text-gray-600 hover:bg-gray-100 hover:text-gray-800 focus:bg-gray-100 focus:text-gray-800 rounded-full">
         <span class="sr-only">Menu</span>
         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
@@ -92,7 +92,9 @@
       </div> -->
   
       <div class="relative w-full max-w-md sm:-ml-2">
-        <button class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-white border-solid border-1 border-white hover:border-green-600 hover:text-green-600 focus:bg-white focus:text-green-600 focus:border-green-600">
+        <button
+        [routerLink]="['/start-quiz']"
+        class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-white border-solid border-1 border-white hover:border-green-600 hover:text-green-600 focus:bg-white focus:text-green-600 focus:border-green-600">
           Start Quiz
         </button>
       </div>
@@ -135,7 +137,7 @@
         </div>
       </div>
     </header>
-    <main class="p-6 sm:p-10 space-y-6">
+    <main class="p-6 sm:p-10 space-y-6" *ngIf="!isStartQuizRoute()">
       <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
         <div class="mr-6">
           <h1 class="text-4xl font-semibold mb-2">Welcome To SatoQuiz</h1>

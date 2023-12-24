@@ -1,6 +1,9 @@
+import { TestQuestion } from "../TestQuestion/test-question";
+import { Answer } from "../answer/answer";
 import { Level } from "../level.model";
 import { Subject } from "../subject/subject.model";
 import { Teacher } from "../teacher/teacher";
+import { Validation } from "../validation/validation";
 
 export interface Question {
   questionId?: number;
@@ -16,4 +19,7 @@ export interface Question {
     link: string;
     type: string;
   }[];
+  questionTest: TestQuestion[];
+  validations : Validation[];
+
 }

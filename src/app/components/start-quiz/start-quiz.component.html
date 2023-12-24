@@ -1,0 +1,34 @@
+
+
+<div *ngIf="test" class="bg-blue-500 p-8 rounded-md shadow-md">
+  <h2 class="text-2xl font-bold mb-4 text-white">{{ test.instructions }} Questions</h2>
+
+  <div *ngIf="currentQuestionIndex < testQuestions.length" class="">
+    <div class="mb-4  text-white">
+      <strong>Question:</strong> {{ getCurrentQuestion().question.text }}
+    </div>
+    <div class="mb-4 text-white">
+      <strong>Temporize:</strong> {{ countdown }}
+    </div>
+    <div class="mb-4">
+      <strong>Answers:</strong>
+      <ul class="list-disc pl-6">
+        <li *ngFor="let validation of getCurrentQuestion().question.validations" class="mb-2">
+          <label class="flex items-center text-white">
+            <input type="radio" name="currentQuestion" [(ngModel)]="selectedAnswers[currentQuestionIndex]"
+              [value]="validation" class="mr-2 text-blue-500">
+            <span>{{ validation.answer.answerText }} - Points: {{ validation.points }}</span>
+          </label>
+        </li>
+      </ul>
+    </div>
+
+    <div class="mt-4">
+      <button (click)="nextQuestion()" [disabled]="!isAnswerSelected()" class="bg-blue-700 text-white py-2 px-4 rounded-md hover:bg-blue-800 focus:outline-none focus:shadow-outline-blue">
+        {{ currentQuestionIndex < testQuestions.length - 1 ? 'Next' : 'Done' }}
+      </button>
+ 
+</div>
+
+  </div>
+</div>

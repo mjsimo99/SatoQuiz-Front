@@ -1,4 +1,5 @@
 
+import { TestQuestion } from '../TestQuestion/test-question';
 import { Teacher } from '../teacher/teacher';
 
 export interface Test {
@@ -11,6 +12,7 @@ export interface Test {
     remark: string;
     instructions: string;
     teacher: Teacher;
+    questionTest: TestQuestion[];
 
 
 }

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { LevelComponent } from './components/level/level.component';
 import { QuizDashboardComponent } from './components/quiz-dashboard/quiz-dashboard.component';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule , ReactiveFormsModule  } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SubjectComponent } from './components/subject/subject.component';
 import { QuestionComponent } from './components/question/question.component';
 import { AnswerComponent } from './components/answer/answer.component';
@@ -15,7 +15,9 @@ import { TeacherComponent } from './components/teacher/teacher.component';
 import { PartieStudentComponent } from './components/partie-student/partie-student.component';
 import { ValidationComponent } from './components/validation/validation.component';
 import { TestComponent } from './components/test/test.component';
-import { StartQuizComponent } from './start-quiz/start-quiz.component';
+import { StartQuizComponent } from './components/start-quiz/start-quiz.component';
+import { TestQuestionComponent } from './components/testQuestion/test-question/test-question.component';
+import { AssignTestsComponent } from './components/assign-tests/assign-tests.component';
 
 
 @NgModule({
@@ -32,16 +34,18 @@ import { StartQuizComponent } from './start-quiz/start-quiz.component';
     ValidationComponent,
     TestComponent,
     StartQuizComponent,
-    
-    
+    TestQuestionComponent,
+    AssignTestsComponent,
+
+
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule, 
+    FormsModule,
     ReactiveFormsModule
-    
+
   ],
   providers: [],
   bootstrap: [AppComponent]

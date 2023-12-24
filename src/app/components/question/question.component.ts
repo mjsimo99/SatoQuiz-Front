@@ -36,8 +36,8 @@ export class QuestionComponent implements OnInit {
 
   ngOnInit(): void {
     this.fetchQuestions();
-    this.fetchLevels();    // Add this line
-    this.fetchSubjects();  // Add this line
+    this.fetchLevels();    
+    this.fetchSubjects();  
   }
 
   closeModal(): void {
@@ -149,7 +149,9 @@ export class QuestionComponent implements OnInit {
 
     this.questionService.addQuestion(newQuestion).subscribe(
       (data) => {
-        this.handleAddSuccess(data);
+        this.fetchQuestions();
+        this.closeModal();
+        this.showSuccessAlert('Question added successfully!');
       },
       (error) => {
         this.handleAddError(error);
@@ -164,7 +166,10 @@ export class QuestionComponent implements OnInit {
 
       this.questionService.updateQuestion(updatedQuestion.questionId ?? 0, updatedQuestion).subscribe(
         () => {
-          this.handleUpdateSuccess();
+          this.fetchQuestions();
+          this.closeModal();
+          this.showSuccessAlert('Question updated successfully!');
+
         },
         (error) => {
           this.handleUpdateError(error);
@@ -207,12 +212,6 @@ export class QuestionComponent implements OnInit {
     console.error('Error fetching questions:', error);
   }
 
-  private handleAddSuccess(data: Question): void {
-    this.questions.push(data);
-    this.resetForm();
-    this.closeModal();
-    this.showSuccessAlert('Question added successfully!');
-  }
 
   private handleAddError(error: any): void {
     console.error('Error adding question:', error);

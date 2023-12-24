@@ -1,0 +1,81 @@
+<button (click)="openModal()" class="flex items-center justify-center m-auto mb-5 bg-blue-500 text-white hover:text-blue-500 hover:bg-white border border-solid border-1 border-white hover:border-blue-700 p-4" type="button">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6 mr-2">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+    </svg>
+    <span>Add Test Question</span>
+  </button>
+  
+  <div tabindex="-1" aria-hidden="true" *ngIf="showModal" class="bg-gray-500 bg-opacity-75 flex items-center overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-md max-h-full text-center">
+      <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+        <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            {{ editMode ? 'Update Test Question' : 'Add New Test Question' }}
+          </h3>
+          <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-toggle="crud-modal">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+        </div>
+  
+        <div class="p-4 md:p-5">
+            <form class="p-4 md:p-5" (ngSubmit)="addTestQuestion()" #testQuestionForm="ngForm">
+                <div class="grid gap-4 mb-4 grid-cols-1">
+                  <div class="col-span-2">
+                    <label for="question" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Question</label>
+                    <select id="question" name="question" [(ngModel)]="newTestQuestion.value.question.questionId" class="block w-full p-3 border border-gray-300 rounded-lg outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                      <option value="" disabled>Select Question</option>
+                      <option *ngFor="let question of questions" [value]="question.questionId">{{ question.text }}</option>
+                    </select>
+                  </div>
+                  <div class="col-span-2">
+                    <label for="test" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Test</label>
+                    <select id="test" name="test" [(ngModel)]="newTestQuestion.value.test.testId" class="block w-full p-3 border border-gray-300 rounded-lg outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300">
+                      <option value="" disabled>Select Test</option>
+                      <option *ngFor="let test of tests" [value]="test.testId">{{ test.instructions }}</option>
+                    </select>
+                  </div>
+                  <div class="col-span-2">
+                    <label for="temporize" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Temporize</label>
+                    <input type="number" id="temporize" name="temporize" [(ngModel)]="newTestQuestion.value.temporize" class="block w-full p-3 border border-gray-300 rounded-lg outline-none dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300" placeholder="Temporize">
+                  </div>
+
+            </div>
+  
+            <div class="flex items-center mt-6 space-x-2 rtl:space-x-reverse justify-center">
+              <button type="submit" class="text-white inline-flex items-center bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <svg class="me-1 -ms-1 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"></path>
+                </svg>
+                {{ editMode ? 'Update' : 'Add' }}
+              </button>
+              <button type="button" class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600" (click)="closeModal(); resetForm()">Cancel</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+
+
+ <h2 class="text-2xl font-semibold leading-tight mb-4">Test Questions</h2>
+
+ <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mt-3">
+   <div *ngFor="let testQuestion of testQuestions" class="min-w-full shadow rounded-lg overflow-hidden bg-white">
+     <div class="p-4 flex flex-col">
+       <p class="text-gray-900 text-lg font-semibold mb-4 text-center">
+         <strong>Test:</strong> {{ testQuestion.test.instructions }}
+       </p>
+       <p *ngIf="testQuestion.temporize" 
+       ><strong>Temporize:</strong> {{ testQuestion.temporize }}</p>
+       <p><strong>Questions:</strong>
+        
+         {{ testQuestion.question.text }}
+        
+       </p>
+     </div>
+   </div>
+ </div>

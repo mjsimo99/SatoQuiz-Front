@@ -1,16 +1,17 @@
 export interface Reponse {
     reponseId?: number;
-    questionResult: number;
+    questionResult?: number;
     assignTest: {
       assignTestId: number;
     };
     validation: {
       answer: {
-        answerId: number;
+        answerId?: number; 
       };
       question: {
         questionId?: number;
       };
+      points: number;
     };
   }
   

@@ -10,6 +10,7 @@ import { Reponse } from 'src/app/models/reponse/reponse';
 import { Answer } from 'src/app/models/answer/answer';
 import { Question } from 'src/app/models/question/question';
 import Swal from 'sweetalert2';
+import { Validation } from 'src/app/models/validation/validation';
 
 
 @Component({
@@ -20,7 +21,7 @@ import Swal from 'sweetalert2';
 export class StartQuizComponent implements OnInit {
   test: Test | null = null;
   testQuestions: TestQuestion[] = [];
-  selectedAnswers: { [key: number]: { answer: Answer; question: Question } } = {};
+  selectedAnswers: { answer: Answer; question: Question ; points?: number}[] = [];
   currentQuestionIndex: number = 0;
   countdown: number = 0;
   countdownInterval: any;
@@ -46,9 +47,11 @@ export class StartQuizComponent implements OnInit {
   nextQuestion() {
     const selectedAnswer = this.selectedAnswers[this.currentQuestionIndex];
     if (selectedAnswer !== undefined) {
-      this.saveSelectedAnswer(selectedAnswer);
+      this.saveSelectedAnswer();
     }
-
+  
+    this.selectedAnswers = [];
+  
     if (this.currentQuestionIndex < this.testQuestions.length - 1) {
       this.currentQuestionIndex++;
       this.resetCountdown();
@@ -57,36 +60,66 @@ export class StartQuizComponent implements OnInit {
       this.navigateToHome();
     }
   }
+  isCheckboxSelected(validation: Validation): boolean {
+    return this.selectedAnswers.some(item => item.answer.answerText === validation.answer.answerText);
+  }
+  
+  
+  toggleCheckbox(validation: Validation): void {
+    const existingIndex = this.selectedAnswers.findIndex(item =>
+      item.answer.answerId === validation.answer.answerId &&
+      item.question.questionId === validation.question.questionId
+    );
+  
+    if (existingIndex !== -1) {
+      this.selectedAnswers.splice(existingIndex, 1);
+    } else {
+      this.selectedAnswers.push({ answer: validation.answer, question: validation.question, points: validation.points });
+    }
+  }
+  
+  
+
+
   private navigateToHome() {
 
     this.router.navigate(['/assign-tests']);
   }
-  saveSelectedAnswer(selectedAnswer: any): void {
+  saveSelectedAnswer(): void {
     const currentQuestion = this.getCurrentQuestion();
     if (currentQuestion) {
       const assignTestId = +this.route.snapshot.params['assignTestId'];
   
-      const response: Reponse = {
-        questionResult: selectedAnswer.points, 
-        assignTest: {
-          assignTestId: assignTestId,
-        },
-        validation: {
-          answer: selectedAnswer.answer,
-          question: currentQuestion.question,
-        },
-      };
+      this.selectedAnswers.forEach(selectedAnswer => {
+        const points = selectedAnswer.points || 0;
   
-      this.reponseService.addReponse(response).subscribe(
-        (response) => {
-          console.log('Response saved successfully:', response);
-        },
-        (error) => {
-          console.error('Error saving response:', error);
-        }
-      );
+        // if (points > 0) {
+          const response: Reponse = {
+            questionResult: points,
+            assignTest: {
+              assignTestId: assignTestId,
+            },
+            validation: {
+              answer: selectedAnswer.answer,
+              question: currentQuestion.question,
+              points: points,
+            },
+          };
+  
+          this.reponseService.addReponse(response).subscribe(
+            (response) => {
+              console.log('Response saved successfully:', response);
+            },
+            (error) => {
+              console.error('Error saving response:', error);
+            }
+          );
+        // }
+      });
     }
   }
+  
+  
   
   
   startCountdown(): void {
@@ -129,7 +162,6 @@ export class StartQuizComponent implements OnInit {
             this.testQuestionService.getTestQuestionsByTestId(testId).subscribe(
               (testQuestionsData) => {
                 this.testQuestions = testQuestionsData;
-                console.log('Test Questions:', this.testQuestions);
                 this.resetCountdown();
                 this.startCountdown();
               },

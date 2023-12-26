@@ -60,6 +60,7 @@ export class StartQuizComponent implements OnInit {
       this.navigateToHome();
     }
   }
+  
   isCheckboxSelected(validation: Validation): boolean {
     return this.selectedAnswers.some(item => item.answer.answerText === validation.answer.answerText);
   }

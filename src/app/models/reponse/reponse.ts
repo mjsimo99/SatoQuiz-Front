@@ -7,9 +7,12 @@ export interface Reponse {
     validation: {
       answer: {
         answerId?: number; 
+        answerText?: string;
       };
       question: {
         questionId?: number;
+        text?: string;
+
       };
       points: number;
     };

@@ -1,5 +1,6 @@
 import { Student } from "../student/student";
 import { Test } from "../test/test";
+import { Reponse } from "../reponse/reponse";
 
 export interface AssignTest {
     assignTestId?: number;
@@ -10,4 +11,5 @@ export interface AssignTest {
     finalResult: number;
     student: Student;
     test: Test;
+    reponses: Reponse[]; 
 }

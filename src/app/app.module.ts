@@ -18,6 +18,10 @@ import { TestComponent } from './components/test/test.component';
 import { StartQuizComponent } from './components/start-quiz/start-quiz.component';
 import { TestQuestionComponent } from './components/testQuestion/test-question/test-question.component';
 import { AssignTestsComponent } from './components/assign-tests/assign-tests.component';
+import { AssignmentTestDetailsComponent } from './components/assignment-test-details/assignment-test-details.component';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 @NgModule({
@@ -36,7 +40,7 @@ import { AssignTestsComponent } from './components/assign-tests/assign-tests.com
     StartQuizComponent,
     TestQuestionComponent,
     AssignTestsComponent,
-
+    AssignmentTestDetailsComponent
 
   ],
   imports: [
@@ -44,8 +48,10 @@ import { AssignTestsComponent } from './components/assign-tests/assign-tests.com
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
-
+    ReactiveFormsModule,
+    ButtonModule,
+    DialogModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

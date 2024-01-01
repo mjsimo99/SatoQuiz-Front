@@ -206,7 +206,6 @@ export class QuestionComponent implements OnInit {
     }
   }
 
-  // Helper Methods
 
   private handleFetchError(error: any): void {
     console.error('Error fetching questions:', error);

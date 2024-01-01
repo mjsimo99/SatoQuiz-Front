@@ -12,6 +12,9 @@ import { TestComponent } from './components/test/test.component';
 import { StartQuizComponent } from './components/start-quiz/start-quiz.component';
 import { TestQuestionComponent } from './components/testQuestion/test-question/test-question.component';
 import { AssignTestsComponent } from './components/assign-tests/assign-tests.component';
+import { ChatComponent } from './components/chat/chat.component';
+import { SalonComponent } from './components/salon/salon/salon.component';
+import { SalonDetailsComponent } from './components/salon-details/salon-details.component';
 
 
 const routes: Routes = [
@@ -28,6 +31,10 @@ const routes: Routes = [
   { path: 'test-questions', component: TestQuestionComponent },
   { path: 'assign-tests', component: AssignTestsComponent },
   { path: 'start-quiz/:testId/:assignTestId', component: StartQuizComponent },
+  { path: 'chat', component: ChatComponent },
+  { path: 'salon', component: SalonComponent },
+  { path: 'salon-details/:id', component: SalonDetailsComponent },
+  { path: 'salon/:id', component: SalonComponent },
 
 
 

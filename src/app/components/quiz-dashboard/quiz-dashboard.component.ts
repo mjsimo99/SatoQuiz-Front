@@ -36,6 +36,8 @@ export class QuizDashboardComponent implements OnInit {
       private questionService: QuestionService,
       private router: Router
 
+      
+
   ) { }
 
   ngOnInit(): void {
@@ -43,6 +45,8 @@ export class QuizDashboardComponent implements OnInit {
     this.fetchSubjects();
     this.fetchAnswers();
     this.fetchQuestions();
+
+    
   }
 
   fetchLevels() {
@@ -88,8 +92,9 @@ export class QuizDashboardComponent implements OnInit {
       }
     )
   }
-  isStartQuizRoute(): boolean {
-    return this.router.url === '/start-quiz';
+  isSalonDetailsRoute(): boolean {
+    // Adjust the route as needed
+    return this.router.url.startsWith('/salon');
   }
 
 

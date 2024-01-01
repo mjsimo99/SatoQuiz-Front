@@ -22,6 +22,11 @@ import { AssignmentTestDetailsComponent } from './components/assignment-test-det
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ChatComponent } from './components/chat/chat.component';
+import { SalonComponent } from './components/salon/salon/salon.component';
+import { CardModule } from 'primeng/card';
+import { SalonDetailsComponent } from './components/salon-details/salon-details.component';
+
 
 
 @NgModule({
@@ -40,7 +45,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     StartQuizComponent,
     TestQuestionComponent,
     AssignTestsComponent,
-    AssignmentTestDetailsComponent
+    AssignmentTestDetailsComponent,
+    ChatComponent,
+    SalonComponent,
+    SalonDetailsComponent
 
   ],
   imports: [
@@ -51,7 +59,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ReactiveFormsModule,
     ButtonModule,
     DialogModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CardModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -3,7 +3,6 @@ import { ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { ChatMessage } from 'src/app/models/chatmessage/chat-message';
 import { ChatMessageDto } from 'src/app/models/chatmessage/chat-messageDto';
-import { ParticipateId } from 'src/app/models/participate/participate-id';
 import { Salon } from 'src/app/models/salon/salon';
 import { ChatService } from 'src/app/services/chat/chat.service';
 

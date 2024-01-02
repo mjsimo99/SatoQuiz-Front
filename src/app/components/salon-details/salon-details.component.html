@@ -12,13 +12,9 @@
                             </div>
                             <div class="ml-4">
                                 <p class="text-grey-darkest">
-{{ chatMessages[0]?.participate?.participateId?.salon?.name }}
+                                    {{ chatMessages[0]?.participate?.participateId?.salon?.name }}
                                 </p>
-                                <div class="flex" >
-                                    <p class="text-grey-darker text-xs mt-1"*ngFor="let message of chatMessages let i = index" [style.color]="getStudentColor(i)">
-                                        {{ message.participate?.participateId?.student?.lastName }} ,
-                                    </p>
-                                </div>
+
                             </div>
                         </div>
 

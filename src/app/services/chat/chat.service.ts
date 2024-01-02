@@ -42,7 +42,7 @@ export class ChatService {
         destination: `/app/chat.sendMessage/${salonId}`,
         body: JSON.stringify({
           content,
-          studentId: 6, // Replace with the actual studentId
+          studentId: 15, 
           salonId,
           timestamp: new Date(),
         }),

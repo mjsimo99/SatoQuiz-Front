@@ -24,7 +24,7 @@ export class SalonDetailsComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private chatService: ChatService
+    private chatService: ChatService,
   ) {}
 
   ngOnInit(): void {
@@ -34,6 +34,7 @@ export class SalonDetailsComponent implements OnInit, OnDestroy {
       this.chatMessages = []; // Clear chat messages when changing salon
       this.chatService.connectWebSocket(this.salonId); // Connect to the new WebSocket
     });
+    
 
     this.chatService.message$.subscribe((newMessage) => {
       if (newMessage) {
@@ -47,12 +48,13 @@ export class SalonDetailsComponent implements OnInit, OnDestroy {
     this.chatService.disconnectWebSocket();
   }
 
+
   sendMessage() {
     this.chatService.sendWebSocketMessage(this.salonId, this.newMessage);
 
     const newChatMessage: ChatMessageDto = {
       content: this.newMessage,
-      studentId: 6,
+      studentId: 15,
       salonId: this.salonId,
       timestamp: new Date(),
     };

@@ -26,6 +26,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { SalonComponent } from './components/salon/salon/salon.component';
 import { CardModule } from 'primeng/card';
 import { SalonDetailsComponent } from './components/salon-details/salon-details.component';
+import { StoreModule } from '@ngrx/store';
 
 
 
@@ -60,7 +61,8 @@ import { SalonDetailsComponent } from './components/salon-details/salon-details.
     ButtonModule,
     DialogModule,
     BrowserAnimationsModule,
-    CardModule
+    CardModule,
+    StoreModule.forRoot({}, {})
   ],
   providers: [],
   bootstrap: [AppComponent]

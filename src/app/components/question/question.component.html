@@ -13,32 +13,33 @@
   <table class="w-full border-collapse bg-white text-left text-sm text-gray-500">
     <thead class="bg-gray-50">
       <tr>
+        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Media</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">Text</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">Answers Number</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">Answers Number Correct</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">Score Points</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">Subject</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900">Level</th>
-        <th scope="col" class="px-6 py-4 font-medium text-gray-900">Media</th>
         <th scope="col" class="px-6 py-4 font-medium text-gray-900 text-center">Actions</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let question of questions" class="border-b hover:bg-gray-50">
+        <td class="px-6 py-4">
+          <ng-container *ngIf="question.mediaList && question.mediaList.length > 0; else noMedia">
+            <div *ngFor="let media of question.mediaList">
+            <img [src]="media.link" alt="image" class="w-10 h-10 rounded-full">
+            </div>
+          </ng-container>
+          <ng-template #noMedia>No Media</ng-template>
+        </td>
         <td class="px-6 py-4">{{ question.text }}</td>
         <td class="px-6 py-4">{{ question.answersNumber }}</td>
         <td class="px-6 py-4">{{ question.answersNumberCorrect }}</td>
         <td class="px-6 py-4">{{ question.scorePoints}}</td>
         <td class="px-6 py-4">{{ question.subject.intitule }}</td>
         <td class="px-6 py-4">{{ question.level.description }}</td>
-        <td class="px-6 py-4">
-          <ng-container *ngIf="question.mediaList && question.mediaList.length > 0; else noMedia">
-            <div *ngFor="let media of question.mediaList">
-              {{ media.link }}
-            </div>
-          </ng-container>
-          <ng-template #noMedia>No Media</ng-template>
-        </td>
+       
 
         <td class="px-6 py-4">
           <div class="flex justify-center gap-4">
@@ -154,7 +155,7 @@
             </div>
             <div class="col-span-2">
               <label for="mediaLink" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Media Link</label>
-              <input type="file" name="link" id="link"
+              <input type="text" name="link" id="link"
                 class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full dark:bg-gray-600 dark:border-gray-500 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                 [(ngModel)]="newQuestion.value.mediaList[i].link" required>
             </div>

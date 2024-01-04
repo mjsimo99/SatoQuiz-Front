@@ -54,7 +54,7 @@ export class SalonDetailsComponent implements OnInit, OnDestroy {
 
     const newChatMessage: ChatMessageDto = {
       content: this.newMessage,
-      studentId: 15,
+      studentId: 16,
       salonId: this.salonId,
       timestamp: new Date(),
     };

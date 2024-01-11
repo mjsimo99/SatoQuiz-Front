@@ -220,6 +220,7 @@ export class AssignTestsComponent implements OnInit {
       icon: 'success',
       confirmButtonText: 'Ok',
     });
+    
   }
 
   private showErrorAlert(message: string): void {

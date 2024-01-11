@@ -18,6 +18,48 @@ export class AssignTestEffects {
       )
     )
   );
+  addAssignTest$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AssignTestActions.addAssignTest),
+      mergeMap((action) =>
+        this.assignTestService.addAssignTest(action.assignTest).pipe(
+          map((assignTest) => AssignTestActions.addAssignTest({ assignTest })),
+          catchError(() => EMPTY)
+        )
+      )
+    )
+  );
 
-  constructor(private actions$: Actions, private assignTestService: AssignTestService) {}
+  updateAssignTest$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(AssignTestActions.updateAssignTest),
+    mergeMap((action) => {
+      const assignTestId = action.assignTest.assignTestId;
+      
+      if (assignTestId !== undefined) {
+        return this.assignTestService.updateAssignTest(assignTestId, action.assignTest).pipe(
+          map((updatedAssignTest) => AssignTestActions.updateAssignTest({ assignTest: updatedAssignTest })),
+          catchError(() => EMPTY)
+        );
+      } else {
+        return EMPTY;
+      }
+    })
+  )
+);
+
+
+deleteAssignTest$ = createEffect(() =>
+  this.actions$.pipe(
+    ofType(AssignTestActions.deleteAssignTest),
+    mergeMap((action) =>
+      this.assignTestService.deleteAssignTest(action.assignTestId).pipe(
+        map(() => AssignTestActions.deleteAssignTest({ assignTestId: action.assignTestId })),
+        catchError(() => EMPTY)
+      )
+    )
+  )
+);
+
+  constructor(private actions$: Actions, private assignTestService: AssignTestService) { }
 }

@@ -27,9 +27,10 @@ export const assignTestReducer = createReducer(
     );
     return { ...state, assignTests: updatedAssignTests };
   }),
-
+  
   on(AssignTestActions.deleteAssignTest, (state, { assignTestId }) => {
     const updatedAssignTests = state.assignTests.filter((t) => t.assignTestId !== assignTestId);
     return { ...state, assignTests: updatedAssignTests };
-  })
+  }),
+  
 );

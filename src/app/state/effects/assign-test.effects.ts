@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY } from 'rxjs';
-import { mergeMap, map, catchError } from 'rxjs/operators';
+import { mergeMap, map, catchError, switchMap } from 'rxjs/operators';
 import * as AssignTestActions from '../actions/assign-test.actions';
 import { AssignTestService } from 'src/app/services/assignTest/assign-test.service';
 
@@ -33,21 +33,27 @@ export class AssignTestEffects {
   updateAssignTest$ = createEffect(() =>
   this.actions$.pipe(
     ofType(AssignTestActions.updateAssignTest),
-    mergeMap((action) => {
+    switchMap((action) => {
       const assignTestId = action.assignTest.assignTestId;
-      
+
+      // Check if assignTestId is defined before proceeding
       if (assignTestId !== undefined) {
-        return this.assignTestService.updateAssignTest(assignTestId, action.assignTest).pipe(
-          map((updatedAssignTest) => AssignTestActions.updateAssignTest({ assignTest: updatedAssignTest })),
-          catchError(() => EMPTY)
-        );
+        return this.assignTestService
+          .updateAssignTest(assignTestId, action.assignTest.data)
+          .pipe(
+            map((updatedAssignTest) =>
+              AssignTestActions.updateAssignTestSuccess({ assignTest: updatedAssignTest })
+            ),
+            catchError(() => EMPTY)
+          );
       } else {
+        // Handle the case where assignTestId is undefined (you can throw an error, log a message, etc.)
+        console.error('AssignTestId is undefined');
         return EMPTY;
       }
     })
   )
 );
-
 
 deleteAssignTest$ = createEffect(() =>
   this.actions$.pipe(

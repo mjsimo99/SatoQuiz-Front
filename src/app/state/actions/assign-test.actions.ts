@@ -20,6 +20,11 @@ export const addAssignTest = createAction(
 
 export const updateAssignTest = createAction(
   '[AssignTest] Update Assign Test',
+  props<{ assignTest: { assignTestId: number; data: Partial<AssignTest> } }>()
+);
+
+export const updateAssignTestSuccess = createAction(
+  '[AssignTest] Update Assign Test Success',
   props<{ assignTest: AssignTest }>()
 );
 

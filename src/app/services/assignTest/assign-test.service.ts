@@ -19,8 +19,8 @@ export class AssignTestService {
     return this.http.post<AssignTest>(`${this.apiUrl}/add`, assignTest);
   }
 
-  updateAssignTest(assignTestId: number, assignTest: AssignTest): Observable<AssignTest> {
-    return this.http.put<AssignTest>(`${this.apiUrl}/update/${assignTestId}`, assignTest);
+  updateAssignTest(assignTestId: number, data: Partial<AssignTest>): Observable<AssignTest> {
+    return this.http.put<AssignTest>(`${this.apiUrl}/update/${assignTestId}`, data);
   }
   deleteAssignTest(assignTestId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${assignTestId}`);

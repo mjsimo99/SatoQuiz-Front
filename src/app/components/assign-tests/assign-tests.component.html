@@ -24,7 +24,7 @@
       </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let assignTest of assignTests">
+    <tr *ngFor="let assignTest of assignTests$ | async">
       <td class="px-6 py-4 whitespace-nowrap">{{ assignTest.startDate }}</td>
       <td class="px-6 py-4 whitespace-nowrap">{{ assignTest.endDate }}</td>
       <td class="px-6 py-4 whitespace-nowrap">{{ assignTest.raison }}</td>

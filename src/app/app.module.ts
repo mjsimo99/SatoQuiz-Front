@@ -27,11 +27,13 @@ import { SalonComponent } from './components/salon/salon/salon.component';
 import { CardModule } from 'primeng/card';
 import { SalonDetailsComponent } from './components/salon-details/salon-details.component';
 import { StoreModule } from '@ngrx/store';
-import { conterReducer } from 'src/store/store';
 import { EffectsModule } from '@ngrx/effects';
 import { assignTestReducer } from './state/reducers/assign-test.reducer';
 import { AssignTestEffects } from './state/effects/assign-test.effects';
-
+import { studentReducer } from './state/reducers/student.reducer';
+import { StudentEffects } from './state/effects/student.effects';
+import { TestEffects } from './state/effects/test.effects';
+import { testReducer } from './state/reducers/test.reducer';
 
 
 @NgModule({
@@ -66,8 +68,8 @@ import { AssignTestEffects } from './state/effects/assign-test.effects';
     DialogModule,
     BrowserAnimationsModule,
     CardModule,
-    StoreModule.forRoot({ assignTest: assignTestReducer }), 
-    EffectsModule.forRoot([AssignTestEffects]), 
+    StoreModule.forRoot({ assignTest: assignTestReducer, student: studentReducer , test: testReducer }), 
+    EffectsModule.forRoot([AssignTestEffects, StudentEffects, TestEffects]), 
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 import { AssignTest } from 'src/app/models/AssignTest/assign-test';
 
 @Injectable({
@@ -19,10 +19,9 @@ export class AssignTestService {
     return this.http.post<AssignTest>(`${this.apiUrl}/add`, assignTest);
   }
 
-  updateAssignTest(assignTestId: number, assignTest: AssignTest): Observable<AssignTest> {
-    return this.http.put<AssignTest>(`${this.apiUrl}/update/${assignTestId}`, assignTest);
+  updateAssignTest(assignTestId: number, data: Partial<AssignTest>): Observable<AssignTest> {
+    return this.http.put<AssignTest>(`${this.apiUrl}/update/${assignTestId}`, data);
   }
-
   deleteAssignTest(assignTestId: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${assignTestId}`);
   }
